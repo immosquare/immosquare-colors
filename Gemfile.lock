@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    immosquare-colors (0.1.2)
-      immosquare-constants (~> 0, >= 0.1.1)
+    immosquare-colors (0.1.3)
+      immosquare-constants (~> 0, >= 0.1.3)
 
 GEM
   remote: https://rubygems.org/
@@ -60,7 +60,7 @@ GEM
       immosquare-extensions (~> 0, >= 0.1.11)
       immosquare-yaml (~> 0, >= 0.1.17)
       rubocop (~> 1)
-    immosquare-constants (0.1.1)
+    immosquare-constants (0.1.3)
     immosquare-extensions (0.1.11)
       unicode_utils (~> 1.4.0)
     immosquare-yaml (0.1.17)

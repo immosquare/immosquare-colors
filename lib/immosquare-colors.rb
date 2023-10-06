@@ -1,3 +1,5 @@
+require "immosquare-constants"
+
 module ImmosquareColors
   class << self
 
@@ -49,7 +51,7 @@ module ImmosquareColors
     ## hex
     ##============================================================##
     def color_name_to_hex(color_name)
-      ImmosquareConstant::Color.color_name_to_hex[color_name.downcase.to_sym] || "#000000"
+      ImmosquareConstants::Color.color_name_to_hex(color_name.downcase.to_sym) || "#000000"
     end
 
   end
