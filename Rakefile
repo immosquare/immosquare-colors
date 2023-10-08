@@ -11,4 +11,13 @@ namespace :immosquare_colors do
       puts "color: #{color} => complementary: #{complementary}"
     end
   end
+
+
+  ##============================================================##
+  ## tint color
+  ##============================================================##
+  task :tint_color do
+    color = "#6b89f8"
+    puts "color: #{color} => tinted: #{ImmosquareColors.tint_color(color, 80)}"
+  end
 end

@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.4] - 2023-10-08
+
+- Add new functions : rgba_to_hex, tint_color, shade_color
+
 ## [0.1.3] - 2023-10-06
 
 - Fixbug with immosquare-constants

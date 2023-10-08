@@ -47,11 +47,45 @@ module ImmosquareColors
     end
 
     ##============================================================##
+    ## To transform a rgba color (array) to hex
+    ##============================================================##
+    def rgba_to_hex(rgba_color)
+      r, g, b, a = rgba_color
+      hex_string = format("#%02x%02x%02x", r, g, b)
+      hex_string += format("%02x", (a * 255).floor) if a && a != 1.0
+      hex_string.upcase
+    end
+
+    ##============================================================##
     ## A dictionary for mapping textual colors to colors
     ## hex
     ##============================================================##
     def color_name_to_hex(color_name)
       ImmosquareConstants::Color.color_name_to_hex(color_name.downcase.to_sym) || "#000000"
+    end
+
+    ##============================================================##
+    ## Mix color whith white (255, 255, 255)
+    ##============================================================##
+    def tint_color(color, weight)
+      color_hex   = color.start_with?("#") ? color : color_name_to_hex(color)
+      r, g, b, a  = hex_to_rgba(color_hex)
+      tinted_r    = ((((100 - weight) * r) + (weight * 255)) / 100).round
+      tinted_g    = ((((100 - weight) * g) + (weight * 255)) / 100).round
+      tinted_b    = ((((100 - weight) * b) + (weight * 255)) / 100).round
+      rgba_to_hex([tinted_r, tinted_g, tinted_b, a])
+    end
+
+    ##============================================================##
+    ## Mix color whith black (0, 0, 0)
+    ##============================================================##
+    def shade_color(color, weight)
+      color_hex   = color.start_with?("#") ? color : color_name_to_hex(color)
+      r, g, b, a  = hex_to_rgba(color_hex)
+      shaded_r    = ((r * (100 - weight)).round / 100)
+      shaded_g    = ((g * (100 - weight)).round / 100)
+      shaded_b    = ((b * (100 - weight)).round / 100)
+      rgba_to_hex([shaded_r, shaded_g, shaded_b, a])
     end
 
   end

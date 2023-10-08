@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    immosquare-colors (0.1.3)
+    immosquare-colors (0.1.4)
       immosquare-constants (~> 0, >= 0.1.3)
 
 GEM

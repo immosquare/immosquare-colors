@@ -29,7 +29,7 @@ $ gem install immosquare-colors
 The `get_complementary_color` method helps determine if the complementary color of a given color should be black or white.
 
 ```ruby
-color         = "#FF5733" 
+color         = "#FF5733"
 complementary = ImmosquareColors.get_complementary_color(color)
 puts complementary  # This will output "#000000" (black) based on default luminance calculation.
 ```
@@ -46,10 +46,39 @@ puts complementary  # The output might vary based on the custom luminance.
 If you have a HEX color and need its RGBA representation, the `hex_to_rgba` method is what you need.
 
 ```ruby
-
 hex_color = "#FF5733FF"
 rgba      = ImmosquareColors.hex_to_rgba(hex_color)
 puts rgba  # This outputs an array: [255, 87, 51, 1.0]
+```
+
+### Convert RGBA to HEX:
+
+To convert an RGBA array representation back to its HEX representation, use the `rgba_to_hex` method.
+
+```ruby
+rgba_array = [255, 87, 51, 1.0]
+hex_color  = ImmosquareColors.rgba_to_hex(rgba_array)
+puts hex_color  # This outputs: "#FF5733FF"
+```
+
+### Tinting Colors:
+
+To lighten a color by blending it with white, use the `tint` method.
+
+```ruby
+color     = "#FF5733"
+tinted    = ImmosquareColors.tint(color, 50)
+puts tinted  # This outputs: "#FFAB99"
+```
+
+### Shading Colors:
+
+To darken a color by blending it with black, use the `shade` method.
+
+```ruby
+color     = "#FF5733"
+shaded    = ImmosquareColors.shade(color, 50)
+puts shaded  # This outputs : #7F2B19
 ```
 
 ### Named Color to HEX:
@@ -59,8 +88,9 @@ Map textual color names to their HEX representation using the `color_name_to_hex
 ```ruby
 color_name          = "red"
 hex_representation  = ImmosquareColors.color_name_to_hex(color_name)
-puts hex_representation  # This will output "#FF0000"
+puts hex_representation  # This outputs "#FF0000"
 ```
+
 
 ## Contributing
 
