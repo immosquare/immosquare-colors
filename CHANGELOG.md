@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.5] - 2023-10-08
+
+- tint_color & shade_color value in %
+
 ## [0.1.4] - 2023-10-08
 
 - Add new functions : rgba_to_hex, tint_color, shade_color

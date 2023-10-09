@@ -60,7 +60,7 @@ RSpec.describe(ImmosquareColors) do
   describe ".tint_color" do
     context "with hex colors" do
       it "returns a tinted color based on the given weight" do
-        expect(described_class.tint_color("#FF5733", 50)).to(eq("#FFAB99"))
+        expect(described_class.tint_color("#FF5733", 0.5)).to(eq("#FFAB99"))
       end
 
       it "returns the same color when weight is 0%" do
@@ -68,20 +68,20 @@ RSpec.describe(ImmosquareColors) do
       end
 
       it "returns white when weight is 100%" do
-        expect(described_class.tint_color("#FF5733", 100)).to(eq("#FFFFFF"))
+        expect(described_class.tint_color("#FF5733", 1)).to(eq("#FFFFFF"))
       end
     end
 
     context "with RGBA colors" do
       it "keeps the alpha component intact" do
-        expect(described_class.tint_color("#FF5733AA", 50)).to(eq("#FFAB99AA"))
+        expect(described_class.tint_color("#FF5733AA", 0.5)).to(eq("#FFAB99AA"))
       end
     end
   end
 
   describe ".shade" do
     it "returns a shaded color based on the given weight" do
-      expect(described_class.shade_color("#FF5733", 50)).to(eq("#7F2B19"))
+      expect(described_class.shade_color("#FF5733", 0.5)).to(eq("#802C1A"))
     end
   end
 end

@@ -70,9 +70,9 @@ module ImmosquareColors
     def tint_color(color, weight)
       color_hex   = color.start_with?("#") ? color : color_name_to_hex(color)
       r, g, b, a  = hex_to_rgba(color_hex)
-      tinted_r    = ((((100 - weight) * r) + (weight * 255)) / 100).round
-      tinted_g    = ((((100 - weight) * g) + (weight * 255)) / 100).round
-      tinted_b    = ((((100 - weight) * b) + (weight * 255)) / 100).round
+      tinted_r    = (((1 - weight) * r) + (weight * 255)).round
+      tinted_g    = (((1 - weight) * g) + (weight * 255)).round
+      tinted_b    = (((1 - weight) * b) + (weight * 255)).round
       rgba_to_hex([tinted_r, tinted_g, tinted_b, a])
     end
 
@@ -82,9 +82,9 @@ module ImmosquareColors
     def shade_color(color, weight)
       color_hex   = color.start_with?("#") ? color : color_name_to_hex(color)
       r, g, b, a  = hex_to_rgba(color_hex)
-      shaded_r    = ((r * (100 - weight)).round / 100)
-      shaded_g    = ((g * (100 - weight)).round / 100)
-      shaded_b    = ((b * (100 - weight)).round / 100)
+      shaded_r    = (r * (1 - weight)).round
+      shaded_g    = (g * (1 - weight)).round
+      shaded_b    = (b * (1 - weight)).round
       rgba_to_hex([shaded_r, shaded_g, shaded_b, a])
     end
 

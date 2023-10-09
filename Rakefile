@@ -18,6 +18,6 @@ namespace :immosquare_colors do
   ##============================================================##
   task :tint_color do
     color = "#6b89f8"
-    puts "color: #{color} => tinted: #{ImmosquareColors.tint_color(color, 80)}"
+    puts "color: #{color} => tinted: #{ImmosquareColors.tint_color(color, 0.8)}"
   end
 end
