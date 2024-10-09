@@ -1,4 +1,4 @@
-# IMMO SQUARE Colors
+# immosquare Colors
 
 Enhance your Ruby experience with utility methods for standard classes like `String`, `Array`, and `Hash`.
 

@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "immosquare-colors"
   spec.version       = ImmosquareColors::VERSION.dup
 
-  spec.authors       = ["IMMO SQUARE"]
+  spec.authors       = ["immosquare"]
   spec.email         = ["jules@immosquare.com"]
   spec.homepage      = "https://github.com/IMMOSQUARE/immosquare-colors"
 
