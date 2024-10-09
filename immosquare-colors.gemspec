@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
 
   spec.authors       = ["immosquare"]
   spec.email         = ["jules@immosquare.com"]
-  spec.homepage      = "https://github.com/IMMOSQUARE/immosquare-colors"
+  spec.homepage      = "https://github.com/immosquare/immosquare-colors"
 
   spec.summary       = "Ruby utility for complementary color derivation and color conversions."
   spec.description   = "Provides methods to suggest complementary colors based on luminance, convert HEX to RGBA, and map named colors to HEX"
