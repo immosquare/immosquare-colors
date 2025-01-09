@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency("immosquare-constants", "~> 0", ">= 0.1.3")
 
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.2")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.6")
 end
