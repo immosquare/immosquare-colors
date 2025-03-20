@@ -67,7 +67,7 @@ To lighten a color by blending it with white, use the `tint` method.
 
 ```ruby
 color     = "#FF5733"
-tinted    = ImmosquareColors.tint(color, 0.5)
+tinted    = ImmosquareColors.tint_color(color, 0.5)
 puts tinted  # This outputs: "#FFAB99"
 ```
 
@@ -77,7 +77,7 @@ To darken a color by blending it with black, use the `shade` method.
 
 ```ruby
 color     = "#FF5733"
-shaded    = ImmosquareColors.shade(color, 0.5)
+shaded    = ImmosquareColors.share_color(color, 0.5)
 puts shaded  # This outputs : #7F2B19
 ```
 
