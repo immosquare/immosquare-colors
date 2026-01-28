@@ -4,22 +4,8 @@ Enhance your Ruby experience with utility methods for standard classes like `Str
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
 ```ruby
-gem 'immosquare-colors'
-```
-
-Then execute:
-
-```bash
-$ bundle install
-```
-
-Or install it yourself:
-
-```bash
-$ gem install immosquare-colors
+gem "immosquare-colors"
 ```
 
 ## Usage
