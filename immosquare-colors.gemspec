@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["jules@immosquare.com"]
   spec.homepage      = "https://github.com/immosquare/immosquare-colors"
 
-  spec.summary       = "Ruby utility for complementary color derivation and color conversions."
-  spec.description   = "Provides methods to suggest complementary colors based on luminance, convert HEX to RGBA, and map named colors to HEX"
+  spec.summary       = "Ruby utility for complementary color derivation, tinting, shading and color conversions."
+  spec.description   = "Provides methods to derive a black/white complementary color from luminance, tint or shade a color, convert HEX <-> RGBA, and resolve named colors to HEX."
 
 
   spec.files         = Dir["lib/**/*"]

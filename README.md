@@ -1,82 +1,112 @@
-# immosquare Colors
+# immosquare-colors
 
-Enhance your Ruby experience with utility methods for standard classes like `String`, `Array`, and `Hash`.
+Ruby utility for color conversions and derivations: HEX ↔ RGBA, complementary color (black/white) by luminance, tinting (toward white) and shading (toward black), and named-color → HEX lookup (backed by `immosquare-constants`).
 
 ## Installation
+
+Add this line to your Gemfile:
 
 ```ruby
 gem "immosquare-colors"
 ```
 
+Then run:
+
+```bash
+bundle install
+```
+
+Or install it manually:
+
+```bash
+gem install immosquare-colors
+```
+
 ## Usage
 
-### Getting the Complementary Color (standard luminance value is 127.5):
+All methods are exposed as module-level singletons on `ImmosquareColors`.
 
-The `get_complementary_color` method helps determine if the complementary color of a given color should be black or white.
+Methods that accept a `color` argument (`get_complementary_color`, `tint_color`, `shade_color`) accept **either** a HEX string (`"#FF5733"` or `"#FF5733AA"` with alpha) **or** a named color (`"red"`, resolved via `immosquare-constants`).
 
-```ruby
-color         = "#FF5733"
-complementary = ImmosquareColors.get_complementary_color(color)
-puts complementary  # This will output "#000000" (black) based on default luminance calculation.
-```
+### Complementary color (black or white)
 
-With custom luminance:
+`get_complementary_color` returns `"#000000"` or `"#FFFFFF"` — whichever provides the best contrast on the given color, based on luminance. Default luminance threshold is `127.5`.
 
 ```ruby
-complementary = ImmosquareColors.get_complementary_color(color, luminance: 150.0)
-puts complementary  # The output might vary based on the custom luminance.
+ImmosquareColors.get_complementary_color("#FF5733")
+# => "#000000"
+
+ImmosquareColors.get_complementary_color("#222222")
+# => "#FFFFFF"
+
+ImmosquareColors.get_complementary_color("red")
+# => "#000000"
 ```
 
-### Convert HEX to RGBA:
-
-If you have a HEX color and need its RGBA representation, the `hex_to_rgba` method is what you need.
+With a custom luminance threshold:
 
 ```ruby
-hex_color = "#FF5733FF"
-rgba      = ImmosquareColors.hex_to_rgba(hex_color)
-puts rgba  # This outputs an array: [255, 87, 51, 1.0]
+ImmosquareColors.get_complementary_color("#6b89f8", :luminance => 200)
+# => "#FFFFFF"
 ```
 
-### Convert RGBA to HEX:
-
-To convert an RGBA array representation back to its HEX representation, use the `rgba_to_hex` method.
+### Convert HEX to RGBA
 
 ```ruby
-rgba_array = [255, 87, 51, 1.0]
-hex_color  = ImmosquareColors.rgba_to_hex(rgba_array)
-puts hex_color  # This outputs: "#FF5733FF"
+ImmosquareColors.hex_to_rgba("#FF5733")
+# => [255, 87, 51]
+
+ImmosquareColors.hex_to_rgba("#FF5733FF")
+# => [255, 87, 51, 1.0]
 ```
 
-### Tinting Colors:
+### Convert RGBA to HEX
 
-To lighten a color by blending it with white, use the `tint` method.
+The alpha channel is appended only when present and different from `1.0`.
 
 ```ruby
-color     = "#FF5733"
-tinted    = ImmosquareColors.tint_color(color, 0.5)
-puts tinted  # This outputs: "#FFAB99"
+ImmosquareColors.rgba_to_hex([255, 87, 51])
+# => "#FF5733"
+
+ImmosquareColors.rgba_to_hex([255, 87, 51, 1.0])
+# => "#FF5733"
+
+ImmosquareColors.rgba_to_hex([255, 87, 51, 0.5])
+# => "#FF57337F"
 ```
 
-### Shading Colors:
+### Tint a color (toward white)
 
-To darken a color by blending it with black, use the `shade` method.
+`tint_color` mixes the color with white. `weight` is a float between `0` (no tint) and `1` (pure white). The alpha channel, if any, is preserved.
 
 ```ruby
-color     = "#FF5733"
-shaded    = ImmosquareColors.share_color(color, 0.5)
-puts shaded  # This outputs : #7F2B19
+ImmosquareColors.tint_color("#FF5733", 0.5)
+# => "#FFAB99"
+
+ImmosquareColors.tint_color("#FF5733AA", 0.5)
+# => "#FFAB99AA"
 ```
 
-### Named Color to HEX:
+### Shade a color (toward black)
 
-Map textual color names to their HEX representation using the `color_name_to_hex` method.
+`shade_color` mixes the color with black. `weight` is a float between `0` (no shading) and `1` (pure black).
 
 ```ruby
-color_name          = "red"
-hex_representation  = ImmosquareColors.color_name_to_hex(color_name)
-puts hex_representation  # This outputs "#FF0000"
+ImmosquareColors.shade_color("#FF5733", 0.5)
+# => "#802C1A"
 ```
 
+### Named color to HEX
+
+Resolves a textual name to its HEX representation through `immosquare-constants`. Unknown names fall back to `"#000000"`.
+
+```ruby
+ImmosquareColors.color_name_to_hex("red")
+# => "#ff0000"
+
+ImmosquareColors.color_name_to_hex("fakecolor")
+# => "#000000"
+```
 
 ## Contributing
 
