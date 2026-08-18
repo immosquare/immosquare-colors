@@ -1,3 +1,10 @@
+---
+locale: en
+tags:
+  - app:immosquare-colors
+  - audience:technique
+---
+
 # immosquare-colors
 
 Ruby utility for color conversions and derivations: HEX ↔ RGBA, complementary color (black/white) by luminance, tinting (toward white) and shading (toward black), and named-color → HEX lookup (backed by `immosquare-constants`).
