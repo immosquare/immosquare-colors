@@ -115,6 +115,28 @@ ImmosquareColors.color_name_to_hex("fakecolor")
 # => "#000000"
 ```
 
+## Development
+
+Install the dependencies, then run the suite:
+
+```bash
+bundle install
+bundle exec rspec
+```
+
+`bin/ci` is the entry point used by the Jenkins pipeline, and it runs the same way on a laptop — everything specific to the build agent is skipped when `JENKINS_WORKSPACE` is unset.
+
+| Command       | Effect                                                             |
+| ------------- | ------------------------------------------------------------------ |
+| `bin/ci init` | Installs the bundle without the `development` group                |
+| `bin/ci test` | Runs `bundle exec rspec`                                           |
+
+Coverage is off by default, so a local run stays fast and writes nothing. Set `COVERAGE=true` to enable it — `spec/coverage_helper.rb` then starts SimpleCov before the library is loaded and writes both an HTML report and `coverage/lcov.info`, which the pipeline publishes.
+
+```bash
+COVERAGE=true bundle exec rspec
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/immosquare/immosquare-colors](https://github.com/immosquare/immosquare-colors). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant code of conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
