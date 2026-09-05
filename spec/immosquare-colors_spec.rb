@@ -21,6 +21,51 @@ RSpec.describe(ImmosquareColors) do
     it("handles named colors") do
       expect(described_class.get_complementary_color("red")).to(eq("#000000"))
     end
+
+    ##============================================================##
+    ## Mid-luminance colors are where a brightness cutoff and the WCAG
+    ## ratio disagree: both of these sit just under the former 127.5
+    ## threshold and used to be handed white, which reads worse.
+    ##============================================================##
+    it("prefers black on mid-luminance colors where it reads better") do
+      expect(described_class.get_complementary_color("#6c8539")).to(eq("#000000"))
+      expect(described_class.get_complementary_color("#ba6aa9")).to(eq("#000000"))
+    end
+
+    it("always returns the overlay with the higher contrast ratio") do
+      ["#6c8539", "#ba6aa9", "#826aed", "#f9b41f", "#222222", "#ffffff"].each do |color|
+        chosen = described_class.get_complementary_color(color)
+        other  = chosen == "#FFFFFF" ? "#000000" : "#FFFFFF"
+        expect(described_class.contrast_ratio(color, chosen)).to(be >= described_class.contrast_ratio(color, other))
+      end
+    end
+  end
+
+  describe(".relative_luminance") do
+    it("returns 0 for black and 1 for white") do
+      expect(described_class.relative_luminance("#000000")).to(eq(0.0))
+      expect(described_class.relative_luminance("#ffffff")).to(eq(1.0))
+    end
+  end
+
+  describe(".contrast_ratio") do
+    it("returns 21 for black on white and 1 for a color on itself") do
+      expect(described_class.contrast_ratio("#000000", "#ffffff").round(2)).to(eq(21.0))
+      expect(described_class.contrast_ratio("#523985", "#523985").round(2)).to(eq(1.0))
+    end
+
+    it("does not depend on the order of its arguments") do
+      expect(described_class.contrast_ratio("#523985", "#ffffff")).to(eq(described_class.contrast_ratio("#ffffff", "#523985")))
+    end
+  end
+
+  describe(".accessible_contrast?") do
+    it("applies the threshold of the requested level") do
+      expect(described_class.accessible_contrast?("#6c8539", "#ffffff")).to(be(false))
+      expect(described_class.accessible_contrast?("#6c8539", "#ffffff", :level => :aa_large)).to(be(true))
+      expect(described_class.accessible_contrast?("#6c8539", "#000000")).to(be(true))
+      expect(described_class.accessible_contrast?("#6c8539", "#000000", :level => :aaa)).to(be(false))
+    end
   end
 
   describe(".hex_to_rgba") do
