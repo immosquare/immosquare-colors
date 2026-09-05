@@ -118,6 +118,32 @@ module ImmosquareColors
     end
 
     ##============================================================##
+    ## Mix two colors in sRGB, `weight` being the share of the second
+    ## one. Generalises tint (mix with white) and shade (mix with
+    ## black), and mirrors what CSS `color-mix(in srgb, ...)` computes,
+    ## so a value derived here matches what a browser would render.
+    ## Alpha is carried over from the first color.
+    ##============================================================##
+    def mix_colors(color_one, color_two, weight)
+      one_hex        = color_one.start_with?("#") ? color_one : color_name_to_hex(color_one)
+      two_hex        = color_two.start_with?("#") ? color_two : color_name_to_hex(color_two)
+      r1, g1, b1, a1 = hex_to_rgba(one_hex)
+      r2, g2, b2     = hex_to_rgba(two_hex)
+      mixed          = [[r1, r2], [g1, g2], [b1, b2]].map {|from, to| (((1 - weight) * from) + (weight * to)).round }
+      rgba_to_hex(mixed + [a1].compact)
+    end
+
+    ##============================================================##
+    ## The color sitting opposite on the color wheel: same saturation
+    ## and lightness, hue rotated by 180°. Useful to derive a secondary
+    ## color that cannot be mistaken for a tint of the primary one.
+    ##============================================================##
+    def get_opposite_color(color)
+      h, s, l = hex_to_hsl(color)
+      hsl_to_hex([h + 180, s, l])
+    end
+
+    ##============================================================##
     ## Whether two colors are far enough apart to be read together.
     ## `:level` accepts :aa (4.5, body text), :aa_large (3, large text
     ## and graphical objects such as icons or logos) and :aaa (7).
@@ -126,6 +152,58 @@ module ImmosquareColors
       thresholds = {:aa => 4.5, :aa_large => 3.0, :aaa => 7.0}
       threshold  = thresholds[(options[:level] || :aa).to_sym] || thresholds[:aa]
       contrast_ratio(color_one, color_two) >= threshold
+    end
+
+    ##============================================================##
+    ## To transform a hex color to HSL, hue in degrees (0...360),
+    ## saturation and lightness between 0 and 1.
+    ##============================================================##
+    def hex_to_hsl(color)
+      color_hex   = color.start_with?("#") ? color : color_name_to_hex(color)
+      r, g, b     = hex_to_rgba(color_hex).first(3).map {|channel| channel / 255.0 }
+      high, low   = [r, g, b].minmax.reverse
+      lightness   = (high + low) / 2.0
+      return [0.0, 0.0, lightness.round(4)] if high == low
+
+      delta      = high - low
+      saturation = lightness > 0.5 ? delta / (2.0 - high - low) : delta / (high + low)
+      hue        = case high
+                   when r then ((g - b) / delta) + (g < b ? 6.0 : 0.0)
+                   when g then ((b - r) / delta) + 2.0
+                   else        ((r - g) / delta) + 4.0
+                   end
+      [(hue * 60.0).round(2), saturation.round(4), lightness.round(4)]
+    end
+
+    ##============================================================##
+    ## To transform an HSL array back to hex. The hue wraps around, so
+    ## a rotation past 360° needs no clamping by the caller.
+    ##============================================================##
+    def hsl_to_hex(hsl)
+      hue, saturation, lightness = hsl
+      hue = (hue % 360) / 360.0
+      return rgba_to_hex([(lightness * 255).round] * 3) if saturation == 0
+
+      second = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - (lightness * saturation)
+      first  = (2 * lightness) - second
+      rgba_to_hex([1.0 / 3, 0, -1.0 / 3].map {|offset| (hue_to_channel(first, second, hue + offset) * 255).round })
+    end
+
+
+    private
+
+    ##============================================================##
+    ## One channel of an HSL → RGB conversion, from the two
+    ## intermediate values and the hue shifted for that channel.
+    ##============================================================##
+    def hue_to_channel(first, second, hue)
+      hue += 1 if hue < 0
+      hue -= 1 if hue > 1
+      return first + ((second - first) * 6 * hue)       if hue < 1.0 / 6
+      return second                                     if hue < 1.0 / 2
+      return first + ((second - first) * ((2.0 / 3) - hue) * 6) if hue < 2.0 / 3
+
+      first
     end
 
   end

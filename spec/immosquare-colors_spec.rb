@@ -68,6 +68,45 @@ RSpec.describe(ImmosquareColors) do
     end
   end
 
+  describe(".hex_to_hsl and .hsl_to_hex") do
+    it("round-trips a color through HSL") do
+      ["#523985", "#F9B41F", "#0C632E", "#FFFFFF", "#000000", "#808080"].each do |color|
+        expect(described_class.hsl_to_hex(described_class.hex_to_hsl(color))).to(eq(color))
+      end
+    end
+
+    it("wraps a hue past 360 degrees") do
+      expect(described_class.hsl_to_hex([400, 0.5, 0.5])).to(eq(described_class.hsl_to_hex([40, 0.5, 0.5])))
+    end
+  end
+
+  describe(".get_opposite_color") do
+    it("rotates the hue by half the wheel") do
+      expect(described_class.get_opposite_color("#523985")).to(eq("#6C8539"))
+      expect(described_class.get_opposite_color("#B42B55")).to(eq("#2BB48A"))
+    end
+
+    it("is its own inverse") do
+      expect(described_class.get_opposite_color(described_class.get_opposite_color("#523985"))).to(eq("#523985"))
+    end
+  end
+
+  describe(".mix_colors") do
+    it("matches tint when mixed with white and shade when mixed with black") do
+      expect(described_class.mix_colors("#523985", "#FFFFFF", 0.3)).to(eq(described_class.tint_color("#523985", 0.3)))
+      expect(described_class.mix_colors("#523985", "#000000", 0.3)).to(eq(described_class.shade_color("#523985", 0.3)))
+    end
+
+    it("returns either end of the range at weight 0 and 1") do
+      expect(described_class.mix_colors("#523985", "#F9B41F", 0)).to(eq("#523985"))
+      expect(described_class.mix_colors("#523985", "#F9B41F", 1)).to(eq("#F9B41F"))
+    end
+
+    it("keeps the alpha of the first color") do
+      expect(described_class.mix_colors("#FF5733AA", "#FFFFFF", 0.5)).to(eq("#FFAB99AA"))
+    end
+  end
+
   describe(".hex_to_rgba") do
     it("converts hex to rgba") do
       expect(described_class.hex_to_rgba("#FF5733")).to(eq([255, 87, 51]))
