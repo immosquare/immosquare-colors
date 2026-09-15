@@ -192,12 +192,13 @@ bundle install
 bundle exec rspec
 ```
 
-`bin/ci` is the entry point used by the Jenkins pipeline, and it runs the same way on a laptop — everything specific to the build agent is skipped when `JENKINS_WORKSPACE` is unset. It takes one of two subcommands:
+`bin/ci` is the entry point used by the CI, and it runs the same way on a laptop — the runner selects the Ruby of `.ruby-version` and the gemset of `.ruby-gemset` before calling it, and the script provisions nothing itself. It takes one of three subcommands:
 
 | Command       | Effect                                                             |
 | ------------- | ------------------------------------------------------------------ |
 | `bin/ci init` | Installs the bundle without the `development` group                |
 | `bin/ci test` | Runs `bundle exec rspec`                                           |
+| `bin/ci`      | Both, in that order (the default, `all`)                           |
 
 Coverage is off by default, so a local run stays fast and writes nothing. Set `COVERAGE=true` to enable it — `spec/coverage_helper.rb` then starts SimpleCov before the library is loaded and writes both an HTML report and `coverage/lcov.info`, which the pipeline publishes.
 
