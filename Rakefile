@@ -8,7 +8,7 @@ namespace :immosquare_colors do
     colors = ["#6b89f8", "#222222", "red"]
     colors.each do |color|
       complementary = ImmosquareColors.get_complementary_color(color)
-      puts "color: #{color} => complementary: #{complementary}"
+      puts("color: #{color} => complementary: #{complementary}")
     end
   end
 
@@ -18,6 +18,6 @@ namespace :immosquare_colors do
   ##============================================================##
   task :tint_color do
     color = "#6b89f8"
-    puts "color: #{color} => tinted: #{ImmosquareColors.tint_color(color, 0.8)}"
+    puts("color: #{color} => tinted: #{ImmosquareColors.tint_color(color, 0.8)}")
   end
 end
