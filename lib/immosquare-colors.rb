@@ -76,12 +76,15 @@ module ImmosquareColors
     end
 
     ##============================================================##
-    ## To transform a rgba color (array) to hex
+    ## To transform a rgba color (array) to hex. The alpha is
+    ## compared as its 0-255 byte: a fully opaque color (255)
+    ## gets no alpha suffix.
     ##============================================================##
     def rgba_to_hex(rgba_color)
       r, g, b, a = rgba_color
+      alpha_byte = a ? (a * 255).floor : 255
       hex_string = format("#%02x%02x%02x", r, g, b)
-      hex_string += format("%02x", (a * 255).floor) if a && a != 1.0
+      hex_string += format("%02x", alpha_byte) if alpha_byte < 255
       hex_string.upcase
     end
 
