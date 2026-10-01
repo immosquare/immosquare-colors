@@ -43,7 +43,7 @@ ImmosquareColors.hex_to_rgba("#FF5733FF")
 # => [255, 87, 51, 1.0]
 ```
 
-`ImmosquareColors.rgba_to_hex` converts an RGBA array back to a HEX string. The alpha channel is appended only when present and different from `1.0`.
+`ImmosquareColors.rgba_to_hex` converts an RGBA array back to a HEX string. The alpha channel is appended only when its 0–255 byte is below `255`. A missing alpha and an alpha of `1.0` both map to that byte, and so does a float just above `1.0` that still floors to `255`, so none of them gets a suffix.
 
 ```ruby
 ImmosquareColors.rgba_to_hex([255, 87, 51])
@@ -197,13 +197,14 @@ bundle exec rspec
 | Command       | Effect                                                             |
 | ------------- | ------------------------------------------------------------------ |
 | `bin/ci init` | Installs the bundle without the `development` group                |
-| `bin/ci test` | Runs `bundle exec rspec`                                           |
+| `bin/ci test` | Runs `bundle exec rspec` with coverage on                          |
 | `bin/ci`      | Both, in that order (the default, `all`)                           |
 
-Coverage is off by default, so a local run stays fast and writes nothing. Set `COVERAGE=true` to enable it — `spec/coverage_helper.rb` then starts SimpleCov before the library is loaded and writes both an HTML report and `coverage/lcov.info`, which the pipeline publishes.
+Every subcommand exports `BUNDLE_WITHOUT=development`, so a gem the specs need belongs to the `test` group of the Gemfile. A plain `bundle exec rspec` leaves coverage off, so that local run stays fast and writes nothing. `bin/ci` defaults `COVERAGE` to `true` unless the variable is already set, and the CI collects `coverage/lcov.info`. `spec/coverage_helper.rb` starts SimpleCov before the library is loaded only when `COVERAGE` equals `true`, then writes both an HTML report and `coverage/lcov.info`.
 
 ```bash
 COVERAGE=true bundle exec rspec
+COVERAGE=false bin/ci test
 ```
 
 ## Contributing to immosquare-colors and license

@@ -8,7 +8,6 @@
 
 ### Changed
 - `get_complementary_color` now picks black or white by WCAG contrast ratio instead of a perceived-brightness cutoff; passing `:luminance` keeps the former behaviour
-- Minimum required Ruby version raised to 3.2.6
 
 ## [0.1.5] - 2023-10-08
 - tint_color & shade_color value in %
